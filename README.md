@@ -7,4 +7,4 @@ good good study,day day up.
 
 >### Greenplum
 
->> [数据库管理](Database\Greenplum\数据库管理.md)
+>> [数据库管理](Database/Greenplum/数据库管理.md)
