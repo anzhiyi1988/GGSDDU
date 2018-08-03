@@ -4,4 +4,5 @@ good good study,day day up.<br>
 ## 目录
 - Database
   - Greenplum
-    - [数据库管理](Database/Greenplum/managing.md)
+    - [DDL&DML](Database/Greenplum/dml_ddl.md)
+    - [日常管理](Database/Greenplum/managing.md)
