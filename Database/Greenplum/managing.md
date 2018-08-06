@@ -6,4 +6,3 @@
 
 #### 查询每个表的占用空间
 `select pg_size_pretty(pg_relation_size('schema.tname'));`
-`select pg_size_pretty(pg_relation_size('schema.tname'));`
