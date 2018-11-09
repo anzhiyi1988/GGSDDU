@@ -119,6 +119,7 @@ EA提供四个窗口来定义工作的分配
 - Syntax:MaxVal=200; - 最大值
 - Syntax:Text=#value#anzhy; - 进度条后面的显示内容
 - Syntax:Compartment=1; - 同一个元素的进度条分类
+- Click on the element and either press Ctrl+Shift+Y or right-click and select the 'Features and Properties > Feature and Compartment Visibility' option. The 'Feature and Compartment Visibility' dialog displays.
 
 # Use Case Estimation
 估算项目的任务和时间
