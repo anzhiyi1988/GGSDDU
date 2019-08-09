@@ -1,0 +1,4 @@
+[TOC]
+
+# matplotlib.pyplot.figure
+
