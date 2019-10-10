@@ -1,6 +1,6 @@
 # 安装npm
 
-安装 node.js后就 可以使用 npm命令了
+安装 node.js后就 可以使用 npm命令了
 
 # 安装cnpm
 
@@ -9,6 +9,8 @@ npm install -g cnpm --registry=https://registry.npm.taobao.org
 ```
 
 # 安装vue-cli
+
+-g ：全局安装参数
 
 ```
 cnpm install -g @vue/cli
@@ -37,6 +39,25 @@ vue ui
 ```
 vue create projectname
 ```
+
+## 手动选择组件（未完成）
+
+```
+? Check the features needed for your project: (Press <space> to select, <a> to toggle all, <i> to invert selection)
+>(*) Babel
+ ( ) TypeScript
+ ( ) Progressive Web App (PWA) Support
+ ( ) Router
+ ( ) Vuex
+ ( ) CSS Pre-processors
+ (*) Linter / Formatter
+ ( ) Unit Testing
+ ( ) E2E Testing   
+```
+
+
+
+
 
 # 项目结构说明
 
