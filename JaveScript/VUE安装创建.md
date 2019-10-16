@@ -86,9 +86,33 @@ npm install iview --save
 
 
 
+# 安装ant design of vue 组件库
 
+## 安装
 
+```dos
+G:\D2D\d2d_view_vue>npm install ant-design-vue --save
+```
 
+## 引入
+
+在babel.config.js中增加如下代码：
+
+```jsx
+// .babelrc or babel-loader option
+{
+  "plugins": [
+    ["import", { "libraryName": "ant-design-vue", "libraryDirectory": "es", "style": "css" }] // `style: true` 会加载 less 文件
+  ]
+}
+```
+
+然后只需从 ant-design-vue 引入模块即可，无需单独引入样式。等同于下面手动引入的方式。
+
+```jsx
+// babel-plugin-import 会帮助你加载 JS 和 CSS
+import { DatePicker } from 'ant-design-vue';
+```
 
 # vue介绍
 

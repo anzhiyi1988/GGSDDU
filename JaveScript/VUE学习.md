@@ -14,7 +14,7 @@ Vue.componet，全局定义组件
 
 
 
-style的 scope 属性 ：只对本组件有效
+style的 scope 属性 ：只对本组件有效
 
 
 
@@ -81,4 +81,22 @@ props: {
 ```
 
 父级组件就会接收该事件并更新 `postFontSize` 的值。
+
+
+
+
+
+# 二、路由
+
+`this.$router` 访问路由器，也可以通过 `this.$route` 访问当前路由：
+
+
+
+当前路由可以获取很多内容，比如
+
+```jsx
+this.$route.params -- 可以获取参数
+this.$route.query -- 可以获取url中查询参数
+
+```
 
