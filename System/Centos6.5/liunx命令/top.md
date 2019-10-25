@@ -1,123 +1,211 @@
-PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND 
 
-**VIRT：virtual memory usage 虚拟内存**
 
-1、进程“需要的”虚拟内存大小，包括进程使用的库、代码、数据等
 
-2、假如进程申请100m的内存，但实际只使用了10m，那么它会增长100m，而不是实际的使用量
 
-**RES：resident memory usage 常驻内存**
+#### 简介
 
-1、进程当前使用的内存大小，但不包括swap out
+------
 
-2、包含其他进程的共享
+```
+top -hv|-bcHiOSs -d secs -n max -u|U user -p pid -o fld -w [cols]
+```
 
-3、如果申请100m的内存，实际使用10m，它只增长10m，与VIRT相反
 
-4、关于库占用内存的情况，它只统计加载的库文件所占内存大小
 
-**SHR：shared memory 共享内存**
+当使用top时，有两个重要的键：帮助（h）和退出（q），首次使用top，主要 分三个区域：1.摘要区；2.字段/列标题；3.任务区。列的宽度是可变的，也受命令行输入时-w选项的影响。显示的内容可以通过上下左右键移动。如果没有任何配置和自定义修改，top启动时的默认和显示有关的参数值如下，*的值可以在命令行指定：
 
-1、除了自身进程的共享内存，也包括其他进程的共享内存
+```
+Global-defaults
+   A - Alt display      Off (full-screen)            -- 全屏显示默认关闭
+ * d - Delay time       1.5 seconds                  -- 刷新频率1.5s
+ * H - Threads mode     Off (summarize as tasks)     -- 线程模式默认关闭
+   I - Irix mode        On  (no, `solaris' smp)      -- ？？？
+ * p - PID monitoring   Off (show all processes)     -- 在不指定PID的情况下，默认显示所有
+ * s - Secure mode      Off (unsecured)              -- 安全模式默认关闭
+   B - Bold enable      On  (yes, bold globally)     -- 默认全局粗体
+Summary-Area-defaults
+   l - Load Avg/Uptime  On  (thus program name)      -- 显示load状态
+   t - Task/Cpu states  On  (1+1 lines)              -- 显示任务和cpu状态，两行
+   m - Mem/Swap usage   On  (2 lines worth)          -- 显示内存状态，两行
+   1 - Single Cpu       Off (thus multiple cpus)     --？？？
+Task-Area-defaults
+   b - Bold hilite      Off (use `reverse')
+ * c - Command line     Off (name, not cmdline)      -- 详细命令关闭，默认显示命令名字
+ * i - Idle tasks       On  (show all tasks)         -- 空闲开启，所以显示所有任务
+   J - Num align right  On  (not left justify)       -- 数字默认右对齐
+   j - Str align right  Off (not right justify)      -- 字符默认左对齐
+   R - Reverse sort     On  (pids high-to-low)       -- 默认按照pid高到底排序
+ * S - Cumulative time  Off (no, dead children)      -- 累计时间关闭？？？？
+ * u - User filter      Off (show euid only)         -- 用户过滤关？？？
+ * U - User filter      Off (show any uid)           -- ？？？
+   V - Forest view      On  (show as branches)       -- ？？？
+   x - Column hilite    Off (no, sort field)         -- 高亮列关闭
+   y - Row hilite       On  (yes, running tasks)     -- 高亮行开启，正在运行的任务高亮
+   z - color/mono       On  (show colors)            -- 颜色开？？？
+```
 
-2、虽然进程只使用了几个共享库的函数，但它包含了整个共享库的大小
 
-3、计算某个进程所占的物理内存大小公式：RES – SHR
 
-4、swap out后，它将会降下来
+#### 选项说明
 
-**DATA**
+------
 
-1、数据占用的内存。如果top没有显示，按f键可以显示出来。
+```
+-hv|-bcHiOSs -d secs -n max -u|U user -p pid -o fld -w [cols]
+```
 
-2、真正的该程序要求的数据空间，是真正在运行中要使用的。
+##### -h | -v  :Help/Version
 
- 
+Show library version and the usage prompt, then quit.
 
- 
+##### -b  :Batch-mode operation
 
-**top 运行中可以通过 top 的内部命令对进程的显示方式进行控制。内部命令如下：**
+采用批处理模式打开top命令，这对向其他程序和文件发送输出结果很有用，此模式下top不接收任何输入（交互模式不能用了），直到达到通过`-n`指定的运行次数或被kill为止。
 
-s – 改变画面更新频率
+##### -c  :Command-line/Program-name toggle
 
-l – 关闭或开启第一部分第一行 top 信息的表示
+控制command列是显示命令还是命令名，在输入top时指定，也开在启动top后（不是`-b`模式）直接键入‘c’。
 
-t – 关闭或开启第一部分第二行 Tasks 和第三行 Cpus 信息的表示
+##### -d  :Delay-time interval as:  -d ss.t (secs.tenths)
 
-m – 关闭或开启第一部分第四行 Mem 和 第五行 Swap 信息的表示
+控制显示的输出频率，在输入top时指定，也可在启动top后（不是`-b`模式）直接键入‘d’或者‘s’。
 
-N – 以 PID 的大小的顺序排列表示进程列表
+##### -H  :Threads-mode operation
 
-P – 以 CPU 占用率大小的顺序排列进程列表
+控制以线程模式显示，如果不加此参数，则显示的是进程中所有线程的总和，在输入top时指定，也可在启动top后（不是`-b`模式）直接键入‘H’。
 
-M – 以内存占用率大小的顺序排列进程列表
+##### -i  :Idle-process toggle
 
-h – 显示帮助
+控制显示和上次更新比是否空闲任务，在输入top时指定，也可在启动top后（不是`-b`模式）直接键入‘i’。
 
-n – 设置在进程列表所显示进程的数量
+##### -n  :Number-of-iterations limit as:  -n number
 
-q – 退出 top
+指定刷新多少次结束，在输入top时指定（-n 10），**不支持启动后键入**。
 
-s – 改变画面更新周期
+##### -o  :Override-sort-field as:  -o fieldname
 
-序号 列名 含义
+指定按照某列排序，在列名前加‘+’和‘-’标识升序和降序，本参数主要支持批处理和自动化模式。
 
-a PID 进程id
+##### -O  :Output-field-names
 
-b PPID 父进程id
+在批处理/自动化模式是输出的内容是否包含字段列头。
 
-c RUSER Real user name
+#####  -p  :Monitor-PIDs mode as:  -pN1 -pN2 ...  or  -pN1,N2,N3 ...
 
-d UID 进程所有者的用户id
+监视指定的进程，最多支持指定20个线程，**不支持启动后键入**。启动后，如果要恢复所有进程，可以键入‘=’、‘u’或者‘U’。
 
-e USER 进程所有者的用户名
+> ***注意：p u U三个参数互斥的。***
 
-f GROUP 进程所有者的组名
+##### -s  :Secure-mode operation
 
-g TTY 启动进程的终端名。不是从终端启动的进程则显示为 ?
+控制安全模式，不懂？？？
 
-h PR 优先级
+##### -S  :Cumulative-time toggle
 
-i NI nice值。负值表示高优先级，正值表示低优先级
+开启累计时间后，每个进程和其子进程使用的cpu时间将列出，在输入top时指定，也可在启动top后（不是`-b`模式）直接键入‘S’。
 
-j P 最后使用的CPU，仅在多CPU环境下有意义
+##### -u | -U  :User-filter-mode as:  -u | -U number or name
 
-k %CPU 上次更新到现在的CPU时间占用百分比
+显示指定用户的进程，‘u’选项是有效用户，‘U’是所有用户不管是否有效。 在用户前加‘！’会显示除了此用户外的其他线程。。
 
-l TIME 进程使用的CPU时间总计，单位秒
+> ***注意：p u U三个参数互斥的。***
 
-m TIME+ 进程使用的CPU时间总计，单位1/100秒
+##### -w  :Output-width-override as:  -w [ number ]
 
-n %MEM 进程使用的物理内存百分比
+批处理模式下，如果启动top时不指定参数，则结果会采用‘COLUMNS’和‘LINES’环境变量中的值作为输出格式。
 
-o VIRT 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES
+使用参数后，宽度可以自定义，行数默认无限。，**不支持启动后键入**
 
-p SWAP 进程使用的虚拟内存中，被换出的大小，单位kb。
 
-q RES 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA
 
-r CODE 可执行代码占用的物理内存大小，单位kb
+#### 显示区说明
 
-s DATA 可执行代码以外的部分(数据段+栈)占用的物理内存大小，单位kb
+------
 
-t SHR 共享内存大小，单位kb
+##### 摘要区
 
-u nFLT 页面错误次数
+----
 
-v nDRT 最后一次写入到现在，被修改过的页面数。
+###### UPTIME and LOAD Averages
 
-w S 进程状态。（D=不可中断的睡眠状态，R=运行，S=睡眠，T=跟踪/停止，Z=僵尸进程）
+用户数、1/5/15分钟的平均负载
 
-x COMMAND 命令名/命令行
 
-y WCHAN 若该进程在睡眠，则显示睡眠中的系统函数名
 
-z Flags 任务标志，参考 sched.h
+###### TASK and CPU States
 
-默认情况下仅显示比较重要的 PID、USER、PR、NI、VIRT、RES、SHR、S、%CPU、%MEM、TIME+、COMMAND 列。可以通过下面的快捷键来更改显示内容。
+线程概要
 
-通过 f 键可以选择显示的内容。按 f 键之后会显示列的列表，按 a-z 即可显示或隐藏对应的列，最后按回车键确定。
+```
+running
+sleeping
+stopped
+zombie
+```
 
-按 o 键可以改变列的显示顺序。按小写的 a-z 可以将相应的列向右移动，而大写的 A-Z 可以将相应的列向左移动。最后按回车键确定。
+cpu概要，
 
-按大写的 F 或 O 键，然后按 a-z 可以将进程按照相应的列进行排序。而大写的 R 键可以将当前的排序倒转。
+```
+us, user    : time running un-niced user processes   -- 运行非独立用户进程的时间
+sy, system  : time running kernel processes          -- 运行内核进程的时间
+ni, nice    : time running niced user processes      -- 运行良好的用户进程的时间
+id, idle    : time spent in the kernel idle handler  -- 在内核空闲处理程序中花费的时间
+wa, IO-wait : time waiting for I/O completion        -- 等待I/O完成的时间
+hi : time spent servicing hardware interrupts        -- 服务硬件中断所花费的时间
+si : time spent servicing software interrupts        -- 服务于软件中断的时间
+st : time stolen from this vm by the hypervisor      -- 虚拟机管理程序从此虚拟机窃取的时间
+```
+
+可以通过加入‘t’看到其他信息
+
+![image-20191025190028494](../../../image/image-20191025190028494.png)
+
+```
+a) is the combined us and ni percentage; 
+b) is the sy percentage; 
+c) is the total; and 
+d) is one of two visual graphs of those representations
+```
+
+
+
+###### MEMORY Usage
+
+
+
+
+
+
+
+
+
+##### 字段/列标题区
+
+----
+
+
+
+
+
+
+
+##### 任务区
+
+----
+
+
+
+
+
+```
+top -bcn 1
+```
+
+-b ：批处理，一屏一屏显示。
+-c：是否显示完整的命令行信息
+-n ：指定显示多少批。
+
+
+
+
+
