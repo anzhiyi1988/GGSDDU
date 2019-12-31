@@ -4,6 +4,8 @@
 
 # 安装cnpm
 
+可以不用安全cnpm，这个不一定快，坑爹
+
 ```
 npm install -g cnpm --registry=https://registry.npm.taobao.org
 ```

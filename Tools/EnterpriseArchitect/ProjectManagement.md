@@ -121,6 +121,10 @@ EA提供四个窗口来定义工作的分配
 - Syntax:Compartment=1; - 同一个元素的进度条分类
 - Click on the element and either press Ctrl+Shift+Y or right-click and select the 'Features and Properties > Feature and Compartment Visibility' option. The 'Feature and Compartment Visibility' dialog displays.
 
+
+
+https://sparxsystems.com/enterprise_architect_user_guide/13.5/project_management/using_progress_bars.html
+
 # Use Case Estimation
 估算项目的任务和时间
 

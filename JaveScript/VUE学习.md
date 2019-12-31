@@ -20,7 +20,7 @@ style的 scope 属性 ：只对本组件有效
 
 
 
-data he props 的区别是什么？
+data 和 props 的区别是什么？
 
 
 

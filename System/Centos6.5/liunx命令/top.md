@@ -35,9 +35,9 @@ Task-Area-defaults
    J - Num align right  On  (not left justify)       -- 数字默认右对齐
    j - Str align right  Off (not right justify)      -- 字符默认左对齐
    R - Reverse sort     On  (pids high-to-low)       -- 默认按照pid高到底排序
- * S - Cumulative time  Off (no, dead children)      -- 累计时间关闭？？？？
- * u - User filter      Off (show euid only)         -- 用户过滤关？？？
- * U - User filter      Off (show any uid)           -- ？？？
+ * S - Cumulative time  Off (no, dead children)      -- cpu使用累计时间关闭
+ * u - User filter      Off (show euid only)         -- 按照用户过滤关
+ * U - User filter      Off (show any uid)           -- 按照用户过滤关
    V - Forest view      On  (show as branches)       -- ？？？
    x - Column hilite    Off (no, sort field)         -- 高亮列关闭
    y - Row hilite       On  (yes, running tasks)     -- 高亮行开启，正在运行的任务高亮
@@ -102,7 +102,7 @@ Show library version and the usage prompt, then quit.
 
 ##### -S  :Cumulative-time toggle
 
-开启累计时间后，每个进程和其子进程使用的cpu时间将列出，在输入top时指定，也可在启动top后（不是`-b`模式）直接键入‘S’。
+开启累计时间后，每个进程和其子进程使用的cpu时间将列出，在输入top时指定，也可在启动top后（不是`-b`模式）直接键入**‘S’**。
 
 ##### -u | -U  :User-filter-mode as:  -u | -U number or name
 
@@ -171,11 +171,15 @@ d) is one of two visual graphs of those representations
 
 ###### MEMORY Usage
 
+内存展示，两行，可以通过键入**‘E’**来改变显示的单位，K、M、G、T、P、E。可以通过键入**‘m’**来改变视图（四视图）
 
+第一行物理内存：
 
+total, free, used and buff/cache
 
+第二行虚拟内存：
 
-
+ total, free, used and avail (which is physical memory)
 
 
 
@@ -183,9 +187,229 @@ d) is one of two visual graphs of those representations
 
 ----
 
+介绍top命令可以显示的所有列，这些列可以通过交互模式时键入**‘f’**和**‘F’**管理，键入后出现一个屏幕，内容有当前窗口名，指定的培训字段和所有字段以及这些字段哪些被选择显示了。
+
+某些列可以通过键入**‘e’**改变显示的单位K、M、G、T、P、E。
 
 
 
+###### 1. %CPU  --  CPU Usage
+
+有超过100%的情况，因为显示的是进程模式，可以通过键入**‘H’**改变为线程模式。
+
+当多处理器时，使用率是除以CPU总数，所以可以通过键入**‘I’**切换Irix/Solaris模式。
+
+###### 2. %MEM  --  Memory Usage (RES)
+
+已使用的物理内存占比。
+
+###### 3. CGROUPS  --  Control Groups
+
+进程所属控制组的名称。
+
+###### 4. CODE  --  Code Size (KiB)
+
+用于可执行代码的物理内存量，也称为文本驻留集大小或trs。
+
+###### ** 5.  COMMAND  --  Command Name or Command Line
+
+显示命令，可以通过键入 **‘c’** 改变。
+
+###### 6. DATA  --  Data + Stack Size (KiB)
+
+用于可执行代码以外的物理内存量，也称为数据驻留集大小或DRS。
+
+###### 7. ENVIRON  --  Environment variables
+
+显示各个进程所看到的所有环境变量（如果有）
+
+###### 8.  Flags  --  Task Flags
+
+This  column  represents  the  task's  current  scheduling  flags  which  are  expressed  in  hexadecimal  notation  and  with  zeros suppressed.  These flags are officially documented in
+<linux/sched.h>.
+
+###### 9. GID  --  Group Id
+
+The effective group ID.
+
+###### 10. GROUP  --  Group Name
+
+The effective group name.
+
+###### ** 11. NI  --  Nice Value
+
+任务的优先级，负值优先级高，正值优先级低，零表示？？？，。
+
+###### 12.P  --  Last used CPU (SMP)
+
+最后使用处理器的数字，如果这个值频繁更换，则表示在切换cpu，对性能有影响。
+
+###### 13. PGRP  --  Process Group Id
+
+该值等于进程组第一个成员（称为进程）的进程id。
+
+###### ** 14. PID  --  Process Id
+
+任务进程ID
+
+###### 15. PPID  --  Parent Process Id
+
+The process ID (pid) of a task's parent.
+
+###### ** 16. PR  --  Priority
+
+任务的调度优先级。如果在该字段中看到“rt”，则表示任务正在实时调度优先级下运行。
+
+###### ** 17. RES  --  Resident Memory Size (KiB)
+
+任务正在使用的非交换物理内存
+
+###### 18. RUID  --  Real User Id
+
+The real user ID
+
+###### 19. RUSER  --  Real User Name
+
+ The real user name.
+
+###### ** 20. S  --  Process Status
+
+任务的状态，可以是：
+
+- D=不间断睡眠
+
+- R=运行
+
+- S=睡觉
+
+- T=通过工作控制信号停止
+
+- T=跟踪期间被调试器停止
+
+- Z=僵尸
+
+###### ** 21. SHR  --  Shared Memory Size (KiB)
+
+一个任务可用的共享内存量，并不是所有的共享内存都是常驻的。它只是反映了可能与其他进程共享的内存。
+
+###### 22. SID  --  Session Id
+
+A session is a collection of process groups (see PGRP), usually established by the login shell.  A newly forked process joins the session of its creator.  By convention, this value equals the process ID (see PID) of the first member of the session, called the session leader, which is usually the login shell.
+
+###### 23. SUID  --  Saved User Id
+
+The saved user ID.
+
+###### 24. SUPGIDS  --  Supplementary Group IDs
+
+The IDs of any supplementary group(s) established at login or inherited from a task's parent.  They are displayed in a comma delimited list.
+
+Note: The SUPGIDS field, unlike most columns, is not fixed-width.  When displayed, it plus any other variable width columns will be allocated all remaining screen width (up to the maximum
+512 characters).  Even so, such variable width fields could still suffer truncation.  See topic 5c. SCROLLING a Window for additional information on accessing any truncated data.
+
+###### 25. SUPGRPS  --  Supplementary Group Names
+
+The names of any supplementary group(s) established at login or inherited from a task's parent.  They are displayed in a comma delimited list.
+
+Note: The SUPGRPS field, unlike most columns, is not fixed-width.  When displayed, it plus any other variable width columns will be allocated all remaining screen width (up to the maximum
+512 characters).  Even so, such variable width fields could still suffer truncation.  See topic 5c. SCROLLING a Window for additional information on accessing any truncated data.
+
+###### 26. SUSER  --  Saved User Name
+
+he saved user name.
+
+###### 27. SWAP  --  Swapped Size (KiB)
+
+The non-resident portion of a task's address space.
+
+###### 28. TGID  --  Thread Group Id
+
+The ID of the thread group to which a task belongs.  It is the PID of the thread group leader.  In kernel terms, it represents those tasks that share an mm_struct.
+
+###### 29. TIME  --  CPU Time
+
+任务开始后的cpu时间，  如果是累计模式，则显示的是主进程和子进程（包括已经死掉的）的所有时间。可以哦用过键入 **‘S’** 开启关闭累计模式。
+
+###### 30. TIME+  --  CPU Time, hundredths
+
+The same as TIME, but reflecting more granularity through hundredths of a second.
+
+###### 31. TPGID  --  Tty Process Group Id
+
+###### 32. TTY  --  Controlling Tty6
+
+###### 33. UID  --  User Id
+
+###### 34. USED  --  Memory in Use (KiB)
+
+此字段表示任务已使用的非交换物理内存（res）加上其地址空间的非驻留部分（swap）。
+
+###### 35. USER  --  User Name
+
+###### ** 36. VIRT  --  Virtual Memory Size (KiB)
+
+使用的内存总数，It includes all code, data and shared libraries plus pages that have been swapped out and pages that have been mapped but not used.
+
+###### WCHAN  --  Sleeping in Function
+
+Depending  on  the  availability of the kernel link map (System.map), this field will show the name or the address of the kernel function in which the task is currently sleeping.  Running
+tasks will display a dash ('-') in this column.
+
+By displaying this field, top's own working set could be increased by over 700Kb, depending on the kernel version.  Should that occur, your only means of reducing that overhead will be to
+stop and restart top.
+
+###### nDRT  --  Dirty Pages Count
+
+The  number  of pages that have been modified since they were last written to auxiliary storage.  Dirty pages must be written to auxiliary storage before the corresponding physical memory
+location can be used for some other virtual page.
+
+###### nMaj  --  Major Page Fault Count
+
+The number of major page faults that have occurred for a task.  A page fault occurs when a process attempts to read from or write to a virtual page that is not currently  present  in  its
+address space.  A major page fault is when auxiliary storage access is involved in making that page available.
+
+###### nMin  --  Minor Page Fault count
+
+The  number  of  minor page faults that have occurred for a task.  A page fault occurs when a process attempts to read from or write to a virtual page that is not currently present in its
+address space.  A minor page fault does not involve auxiliary storage access in making that page available.
+
+###### nTH  --  Number of Threads
+
+The number of threads associated with a process.
+
+###### nsIPC  --  IPC namespace
+
+The Inode of the namespace used to isolate interprocess communication (IPC) resources such as System V IPC objects and POSIX message queues.
+
+###### nsMNT  --  MNT namespace
+
+The Inode of the namespace used to isolate filesystem mount points thus offering different views of the filesystem hierarchy.
+
+###### nsNET  --  NET namespace
+
+The Inode of the namespace used to isolate resources such as network devices, IP addresses, IP routing, port numbers, etc.
+
+###### nsPID  --  PID namespace
+
+The Inode of the namespace used to isolate process ID numbers meaning they need not remain unique.  Thus, each such namespace could have its own `init' (PID #1) to manage various initial‐
+ization tasks and reap orphaned child processes.
+
+###### nsUSER  --  USER namespace
+
+The  Inode  of the namespace used to isolate the user and group ID numbers.  Thus, a process could have a normal unprivileged user ID outside a user namespace while having a user ID of 0,
+with full root privileges, inside that namespace.
+
+###### nsUTS  --  UTS namespace
+
+The Inode of the namespace used to isolate hostname and NIS domain name.  UTS simply means "UNIX Time-sharing System".
+
+###### vMj  --  Major Page Fault Count Delta
+
+The number of major page faults that have occurred since the last update (see nMaj).
+
+###### vMn  --  Minor Page Fault Count Delta
+
+The number of minor page faults that have occurred since the last update (see nMin).
 
 
 
