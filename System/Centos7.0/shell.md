@@ -43,3 +43,48 @@ nohup ./program >/dev/null 2>&1 &
  
 
 来自 <<http://blog.csdn.net/geekster/article/details/6657620>> 
+
+
+
+
+
+# 执行sql语句
+
+```shell
+#!/bin/sh
+export PGPASSWORD=xyz123
+
+cmd="psql -h172.16.34.81 -p 5432 -U gpadmin -d jcw_ztk_kf "
+sql=" select c_sjkip||','||c_dkh||','||c_yhm||','||c_mm||','||c_sjk ||','|| c_sjkljjc as r  from db_ztk.t_sjkjcxx_pzb "
+sql3="./home/gp5/gp428/bin/psql -h172.16.34.132 -p 5432 -U postgres -d db_dp_qy -c  'show max_connections'"
+echo $rrr
+dbs=$(  $cmd -c "$sql")
+len=$(  $cmd -c "$sql" | wc -l )
+let len-=1
+i=1
+for line in $dbs
+do
+    if [ $i -gt 2 ] && [ $i -lt $len ] ;then
+        echo "$i line: $line"
+        IFS=,
+        arr=($line)
+        sjkip=${arr[0]}
+        dkh=${arr[1]}
+        yhm=${arr[2]}
+        mm=${arr[3]}
+        sjk=${arr[4]}
+        sjkjjc=${arr[5]}
+
+
+        sql1=" show max_connections "
+        export PGPASSWORD=$mm
+        data=$( psql -h$sjkip -p $dkh -U $yhm -d $sjk -c $sql1 )
+        echo $data
+        echo $( $data | wc -l )
+    else
+        echo "Don't need ! "
+    fi
+    let i+=1
+done
+```
+

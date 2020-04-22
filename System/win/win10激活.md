@@ -10,3 +10,13 @@ C:\WINDOWS\system32>slmgr /ato
 C:\WINDOWS\system32>slmgr.vbs /xpr
 
 C:\WINDOWS\system32>
+
+
+
+
+
+https://github.com/stascorp/rdpwrap/issues/988
+
+
+
+https://blog.csdn.net/weixin_30779691/article/details/94785513

@@ -6,7 +6,7 @@
 
 今天先说条件执行相关的Fragment。
 
-alt（alternative）
+# alt（alternative 可供选择的）
 
 alt用于表现条件执行的程序构造。和alt对应的程序结构可以是if/else结构，也可以是swtich结构。还是从图形编辑软件中找例子。
 
@@ -26,7 +26,7 @@ Condition:输入每个分支的判断条件。输入完成的条件可以在Cond
 
 需要说明的是，这个对话框中不能调整条件的顺序。条件的顺序是通过例子图中红线框出的小箭头来调整的。
 
-opt（optional）
+# opt（optional可选的）
 
  
 
@@ -38,9 +38,7 @@ opt（optional）
 
  
 
-break
-
- 
+# break 
 
 首先要明确的是，这个break不是C/C++语言中的那个break，它包含一个带有监护条件的操作片段，如果监护条件为真，则该片段被执行，该片段以后的部分被忽略；如果监护条件为假，那么该片段不会被执行，该子片段以后的部分则会被执行。
 
@@ -74,16 +72,16 @@ CString FilePathName = dlg.GetPathName();
 
 上图中包含一个以result是否不等于IDOK为监护条件的break片段，如果监护条件为真，则该片段中的sendMesage和删除dlg操作被执行，GetPathName及以后的部分被忽略；如果监护条件为假，那么break片段不会被执行，GetPathName及以后的部分会被执行。
 
-费了半天劲，break其实就是一个有条件的中途退出处理。
+**费了半天劲，break其实就是一个有条件的中途退出处理。**
 
 
 
 | Operator | Action                                                       |
 | -------- | ------------------------------------------------------------ |
 | alt      | Divide up interaction fragments based on Boolean conditions. |
-| opt      | Enclose an optional fragment of interaction.                 |
-| par      | Indicate that operands operate in parallel.                  |
-| loop     | Indicate that the operand repeats a number of times, as specified by interaction constraints. |
+| opt      | Enclose an optional可选的 fragment of interaction.           |
+| par      | Indicate表明 that operands operate in parallel.              |
+| loop     | Indicate that the operand repeats a number of times, as specified by interaction相互影响的constraints条件. |
 | critical | Indicate a sequence that cannot be interrupted by other processing. |
 | neg      | Assert that a fragment is invalid, and implies that all other interaction is valid. |
 | assert   | Specify the only valid fragment to occur. This operator is often enclosed within a consider or ignore operand. |
