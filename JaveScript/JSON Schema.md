@@ -19,3 +19,13 @@ description - 描述本schema
 
 type - 定义类型约束
 
+
+
+# 验证地址
+
+https://www.jsonschemavalidator.net/
+
+# 官网
+
+http://json-schema.org/
+

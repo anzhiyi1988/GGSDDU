@@ -1,3 +1,5 @@
+
+
 转换符 作用
 
 | **c** {*length* }    **lo** {*length* }    **logger** {*length* } | 输出日志的logger名，可有一个整形参数，功能是缩短logger名，设置为0表示只输入logger最右边点符号之后的字符串。   Conversion specifier Logger name Result                 ![1563529078715](../image/1563529078715.png) |
