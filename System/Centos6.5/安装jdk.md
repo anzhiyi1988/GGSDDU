@@ -24,7 +24,7 @@
 
 [pgsql@anzhy ~]$ more .bash_profile
 
-export JAVA_HOME=
+export JAVA_HOME=/home/jdk1.8.0_171
 
 export PATH=$PATH:$JAVA_HOME/bin
 

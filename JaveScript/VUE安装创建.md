@@ -127,3 +127,13 @@ import { DatePicker } from 'ant-design-vue';
 ## 组件
 
 props 定义组件拥有的属性，
+
+
+
+# 格式化相关
+
+ESlint 代码校验
+
+prettier 代码格式、美化
+
+ESlint 和 prettier 部分功能有重叠，所以需要配置一下

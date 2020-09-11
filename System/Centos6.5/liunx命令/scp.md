@@ -1,4 +1,4 @@
-### 两机文件复制
+# 两机文件复制
 
 scp [可选参数] file_source file_target 
 
@@ -8,35 +8,18 @@ scp  filename ip:/dirname
 
 scp  filename ip:/dirname/filename 
 
-### 命令基本格式： 
-
-scp [可选参数] file_source file_target 
-
- 
-
-====== 
-
-从 本地 复制到 远程 
-
-====== 
+## 从 本地 复制到 远程 
 
 \* 复制文件： 
 
 ​        \* 命令格式： 
 
-​                scp local_file remote_username@remote_ip:remote_folder 
-
-​                或者 
-
-​                scp local_file remote_username@remote_ip:remote_file 
-
-​                或者 
-
-​                scp local_file remote_ip:remote_folder 
-
-​                或者 
-
-​                scp local_file remote_ip:remote_file 
+```
+scp local_file remote_username@remote_ip:remote_folder
+scp local_file remote_username@remote_ip:remote_file 
+scp local_file remote_ip:remote_folder 
+scp local_file remote_ip:remote_file
+```
 
  
 
@@ -86,21 +69,16 @@ scp [可选参数] file_source file_target
 
  
 
-====== 
-
-从 远程 复制到 本地 
-
-====== 
+## 从 远程 复制到 本地 
 
 从 远程 复制到 本地，只要将 从 本地 复制到 远程 的命令 的 后2个参数 调换顺序 即可； 
 
- 
+ 例如： 
 
-例如： 
-
-​        scp root@www.cumt.edu.cn:/home/root/others/music /home/space/music/1.mp3 
-
-​        scp -r [www.cumt.edu.cn:/home/root/others/](www.cumt.edu.cn://home/root/others/) /home/space/music/
+```
+scp root@www.cumt.edu.cn:/home/root/others/music /home/space/music/1.mp3 
+scp -r [www.cumt.edu.cn:/home/root/others/](www.cumt.edu.cn://home/root/others/) /home/space/music/
+```
 
 最简单的应用如下 : 
 

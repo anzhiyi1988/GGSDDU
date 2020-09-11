@@ -124,7 +124,7 @@ ulimit –Hu 150
 
 <http://www.ringkee.com/jims/read_folder/books/LinuxHackingExposed>
 
-Ulimit命令
+# Ulimit命令
 
 设置限制     可以把命令加到profile文件里，也可以在/etc/security/limits.conf文件中定义
 

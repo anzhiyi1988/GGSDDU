@@ -1,0 +1,1 @@
+C:\Users\anzhy\AppData\Roaming\Scooter Software\Beyond Compare 3
