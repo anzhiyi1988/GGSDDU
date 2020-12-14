@@ -246,3 +246,113 @@ The `ChangelogCsvDeserializer` contains a simple parsing logic for converting by
 **SocketSourceFunction**
 
 The `SocketSourceFunction` opens a socket and consumes bytes. It splits records by the given byte delimiter (`\n` by default) and delegates the decoding to a pluggable `DeserializationSchema`. The source function can only work with a parallelism of 1.
+
+
+
+
+
+
+
+# 实现自定义数据源
+
+自定义数据源需要实现Flink提供的SourceFunction接口。
+
+SourceFunction接口的定义如下：
+
+```java
+@Public
+public interface SourceFunction<T> extends Function, Serializable {
+    void run(SourceContext<T> ctx) throws Exception;
+    void cancel();
+}
+```
+
+## run方法
+
+run方法为数据源向下游发送数据的主要逻辑。编写套路为：
+
+- 不断调用循环发送数据。
+- 使用一个状态变量控制循环的执行。当`cancel`方法执行后必须能够跳出循环，停止发送数据。
+- 使用SourceContext的collect等方法将元素发送至下游。
+- 如果使用Checkpoint，在SourceContext collect数据的时候必须加锁。防止checkpoint操作和发送数据操作同时进行。
+
+## cancel方法：
+
+`cancel`方法在数据源停止的时候调用。`cancel`方法必须能够控制`run`方法中的循环，停止循环的运行。并做一些状态清理操作。
+
+## SourceContext类
+
+SourceContext在SourceFunction中使用，用于向下游发送数据，或者是发送watermark。
+ SourceContext的方法包括：
+
+- collect：向下游发送数据。有如下三种情况：
+  - 如果使用ProcessingTime，该元素不携带timestamp。
+  - 如果使用IngestionTime，元素使用系统当前时间作为timestamp。
+  - 如果使用EventTime，元素不携带timestamp。需要在数据流后续为元素指定timestamp（assignTimestampAndWatermark）。
+- collectWithTimestamp：向下游发送带有timestamp的数据。和collect方法一样也有如下三种情况：
+  - 如果使用ProcessingTime，timestamp会被忽略
+  - 如果使用IngestionTime，使用系统时间覆盖timestamp
+  - 如果使用EventTime，使用指定的timestamp
+- emitWatermark：向下游发送watermark。watermark也包含一个timestamp。向下游发送watermark意味着所有在watermark的timestamp之前的数据已经到齐。如果在watermark之后，收到了timestamp比该watermark的timestamp小的元素，该元素会被认为迟到，将会被系统忽略，或者进入到旁路输出（side output）。
+- markAsTemporarilyIdle：标记此数据源暂时闲置。该数据源暂时不会发送任何数据和watermark。仅对IngestionTime和EventTime生效。下游任务前移watermark的时候将不会再等待被标记为闲置的数据源的watermark。
+
+# CheckpointedFunction
+
+如果数据源需要保存状态，那么就需要实现CheckpointedFunction中的相关方法。
+ CheckpointedFunction包含如下方法：
+
+- snapshotState：保存checkpoint的时候调用。需要在此方法中编写状态保存逻辑
+- initializeState：在数据源创建或者是从checkpoint恢复的时候调用。此方法包含数据源的状态恢复逻辑。
+
+# 样例
+
+Flink官方给出的样板Source。这个数据源会发送0-999到下游系统。代码如下所示：
+
+```java
+public class ExampleCountSource implements SourceFunction<Long>, CheckpointedFunction {
+    private long count = 0L;
+    // 使用一个volatile类型变量控制run方法内循环的运行
+    private volatile boolean isRunning = true;
+
+    // 保存数据源状态的变量
+    private transient ListState<Long> checkpointedCount;
+
+    public void run(SourceContext<T> ctx) {
+        while (isRunning && count < 1000) {
+            // this synchronized block ensures that state checkpointing,
+            // internal state updates and emission of elements are an atomic operation
+            // 此处必须要加锁，防止在checkpoint过程中，仍然发送数据
+            synchronized (ctx.getCheckpointLock()) {
+                ctx.collect(count);
+                count++;
+            }
+        }
+    }
+
+    public void cancel() {
+        // 设置isRunning为false，终止run方法内循环的运行
+        isRunning = false;
+    }
+
+    public void initializeState(FunctionInitializationContext context) {
+        // 获取存储状态
+        this.checkpointedCount = context
+            .getOperatorStateStore()
+            .getListState(new ListStateDescriptor<>("count", Long.class));
+
+        // 如果数据源是从失败中恢复，则读取count的值，恢复数据源count状态
+        if (context.isRestored()) {
+            for (Long count : this.checkpointedCount.get()) {
+                this.count = count;
+            }
+        }
+    }
+
+    public void snapshotState(FunctionSnapshotContext context) {
+        // 保存数据到状态变量
+        this.checkpointedCount.clear();
+        this.checkpointedCount.add(count);
+    }
+}
+```
+
