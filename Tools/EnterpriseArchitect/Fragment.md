@@ -76,17 +76,18 @@ CString FilePathName = dlg.GetPathName();
 
 
 
-| Operator | Action                                                       |
-| -------- | ------------------------------------------------------------ |
-| alt      | Divide up interaction fragments based on Boolean conditions. |
-| opt      | Enclose an optional可选的 fragment of interaction.           |
-| par      | Indicate表明 that operands operate in parallel.              |
-| loop     | Indicate that the operand repeats a number of times, as specified by interaction相互影响的constraints条件. |
-| critical | Indicate a sequence that cannot be interrupted by other processing. |
-| neg      | Assert that a fragment is invalid, and implies that all other interaction is valid. |
-| assert   | Specify the only valid fragment to occur. This operator is often enclosed within a consider or ignore operand. |
-| strict   | Indicate that the behaviors of the operands must be processed in strict sequence. |
-| seq      | Indicate that the Combined Fragment is weakly sequenced. This means that the ordering within operands is maintained, but the ordering between operands is undefined, so long as an event occurrence of the first operand precedes that of the second operand, if the event occurrences are on the same lifeline. |
-| ignore   | Indicate which messages should be ignored during execution, or can appear anywhere in the execution trace. |
-| consider | Specify which messages should be considered in the trace. This is often used to specify the resulting event occurrences with the use of an assert operator. |
-| ref      | Provide a reference to another diagram.  			The ref fragment is not created using the method described in the Create a Combined Fragment topic. To create a ref fragment, simply drag an existing diagram from the Project Browser onto the current diagram. |
+| Operator???????????? | Action |
+| :----- | :---- |
+| alt                | Divide up interaction fragments based on Boolean conditions.<br/>根据boolean条件划分代码片段，if else  或者 switch |
+| opt 可选的                             | Enclose an **optional** fragment of interaction.<br/>可选的代码片段，感觉和上面差不多，可能这个偏向一个if |
+| par 并行                                 | Indicate that operands operate in **parallel**.<br>表明并行执行操作 |
+| loop                                   | Indicate that the operand repeats a number of times, as specified by interaction constraints.<br/>表明按照次数条件循环执行 |
+| critical 极重要的                      | Indicate a sequence that cannot be interrupted by other processing.<br/>表明本段代码极其重要，不可以被其他处理打断。 |
+| neg                                    | Assert that a fragment is invalid, and implies that all other interaction is valid.<br/>断言片段无效，并暗示所有其他交互都有效。 |
+| assert                                 | Specify the only valid fragment to occur. This operator is often enclosed within a consider or ignore operand. |
+| strict 严格的                             | Indicate that the behaviors of the operands must be processed in **strict** sequence.<br/>表明本段代码必须严格的按照顺序执行。 |
+| seq                                    | Indicate that the Combined Fragment is weakly sequenced. This means that the ordering within operands is maintained, but the ordering between operands is undefined, so long as an event occurrence of the first operand precedes that of the second operand, if the event occurrences are on the same lifeline. |
+| ignore                                 | Indicate which messages should be ignored during execution, or can appear anywhere in the execution trace. |
+| consider                               | Specify which messages should be considered in the trace. This is often used to specify the resulting event occurrences with the use of an assert operator. |
+| ref  参考                              | Provide a reference to another diagram. <br/>The ref fragment is not created using the method described in the Create a Combined Fragment topic. To create a ref fragment, simply drag an existing diagram from the Project Browser onto the current diagram.<br/>- |
+

@@ -1,16 +1,79 @@
- 
+# 集群管理
 
+## 集群状态查询
+
+```
+#查询ES集群的健康状态
 GET /_cat/health?v
+```
 
- 
+green - 一切正常
 
-GET _cat/nodes?v
+yellow - 数据可用，但是一些副本无法分配，（一般是节点不够用了，副本无法分配）
 
- 
+red - 数据不可用
 
-GET _cat/indices?v
+## 节点信息查询
 
- 
+```
+GET /_cat/nodes?v
+```
+
+## 索引信息查询
+
+```
+GET /_cat/indices?v
+
+GET /_cat/indices/<indexname>?v
+```
+
+可以查所有索引的信息，也可以指定<indexname>  索引的名字
+
+
+
+
+
+# 索引查询
+
+```
+# 查询，默认返回10条
+GET /<indexname>/_search
+
+# 查询，指定返回条数
+GET /gkjzzfxx_2/_search
+{
+  "size": 100
+}
+
+# track_total_hits参数会告知具体多少 hits.totall.value索引被追踪
+GET /gkjzzfxx_2/_search
+{
+  "size": 100,
+  "track_total_hits": true
+}
+```
+
+
+
+默认查询参数解析
+
+```
+GET /gkjzzfxx_2/_search
+{
+  "query": {
+    "bool": {
+      "adjust_pure_negative": true,
+      "boost": 1
+    }
+  }
+}
+```
+
+"adjust_pure_negative"
+
+"boost" 权重 ，不同的条件之间，如果权重不一样，则结果匹配的也不同，权重大小会怎样影响结果呢，*不知道啊*
+
+
 
 GET _alias
 

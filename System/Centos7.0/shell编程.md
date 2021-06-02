@@ -88,3 +88,54 @@ do
 done
 ```
 
+
+
+
+
+# 备份文件夹
+
+```shell
+#!/bin/sh
+
+date=$(date +%Y_%m_%d)
+sourceDir="/opt/thunisoft/jdgtyypt/data/wjcs/zip"
+bakDir="/home/anzhy/jdgtyypt/backup"
+
+if [ -d $sourceDir ];
+then
+    if [ -d $bakDir/$date ];
+    then    
+        echo "$(date) begin backup -------------"
+        echo "$(date) cp -R $sourceDir $bakDir/$date"
+        $(cp -R $sourceDir $bakDir/$date)
+        echo "$(date) backup finished ----------"
+    else
+        echo "$(date) not found [$bakDir/$date], begin to create, command:[ mkdir -p $bakDir/$date] "
+        $( mkdir -p $bakDir/$date )
+        if [ -d $bakDir/$date ];
+        then
+            echo "$(date) [$bakDir/$date] was  created"
+            echo "$(date) begin backup -------------"
+            echo "$(date) cp -R $sourceDir $bakDir/$date"
+            $(cp -R $sourceDir $bakDir/$date)
+            echo "$(date) backup finished ----------"
+
+        else
+            echo "$(date) create [$bakDir/$date] was  failed, backup stop !!!"
+        fi
+
+    fi
+else
+    echo "$(date) dir [$sourceDir] not found! backup stop!" 
+fi
+
+```
+
+
+
+
+
+```sh
+0 0 * * * /home/anzhy/xxx.sh >> /home/anzhy/backup.log
+```
+
